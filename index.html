@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DBD Client Pro | TR'de Tek ve Undetectable</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #ff4d4d;
+            --bg: #0a0a0a;
+            --card: #161616;
+            --text: #ffffff;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 3000;
+            top: 0;
+            left: 0;
+            background-color: var(--card);
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            box-shadow: 5px 0 15px rgba(255, 77, 77, 0.3);
+        }
+
+        .sidebar a {
+            padding: 15px 32px;
+            text-decoration: none;
+            font-size: 18px;
+            color: #ccc;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover { color: var(--primary); background: #222; }
+
+        .sidebar .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+
+        /* --- NAV --- */
+        nav {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.9);
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .menu-btn { 
+            font-size: 24px; 
+            cursor: pointer; 
+            color: var(--primary); 
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle, #330000 0%, #0a0a0a 100%);
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin: 10px 0;
+            background: linear-gradient(to right, #ff4d4d, #ffffff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(255, 77, 77, 0.6));
+            letter-spacing: 3px;
+        }
+
+        .btn-download {
+            background: var(--primary);
+            color: white;
+            padding: 18px 45px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.3rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+            margin-top: 20px;
+        }
+
+        .btn-download:hover { transform: scale(1.05); background: #ff1a1a; box-shadow: 0 0 40px var(--primary); }
+
+        section { padding: 100px 20px; text-align: center; }
+        .feature-container { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 40px; }
+        .feature-card { background: var(--card); padding: 30px; border-radius: 15px; width: 250px; border: 1px solid #222; }
+
+        /* --- MODAL --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 5000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            background-color: var(--card);
+            margin: 15% auto;
+            padding: 30px;
+            border: 2px solid var(--primary);
+            width: 80%;
+            max-width: 500px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .modal-btn {
+            background: var(--success);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        #notification {
+            visibility: hidden;
+            min-width: 280px;
+            background-color: var(--success);
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            padding: 20px;
+            position: fixed;
+            z-index: 4000;
+            left: 50%;
+            bottom: 40px;
+            transform: translateX(-50%);
+            font-weight: bold;
+        }
+
+        #notification.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+
+        @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 40px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 40px; opacity: 1;} to {bottom: 0; opacity: 0;} }
+    </style>
+</head>
+<body>
+
+<div id="mySidebar" class="sidebar">
+    <span class="close-btn" onclick="closeNav()">×</span> 
+    <a href="#home" onclick="closeNav()"><i class="fas fa-home"></i> Ana Sayfa</a> 
+    <a href="#about" onclick="closeNav()"><i class="fas fa-users"></i> Hakkımızda</a> 
+    <a href="#setup" onclick="closeNav()"><i class="fas fa-book"></i> Kurulum Rehberi</a>
+</div>
+
+<nav>
+    <div class="menu-btn" onclick="openNav()"><i class="fas fa-bars"></i> <span style="font-size: 14px; font-weight: bold;">MENÜ</span></div>
+    <div style="font-weight: 900; font-size: 22px; letter-spacing: 2px;">DBD<span style="color: var(--primary);">PRO</span></div>
+</nav>
+
+<section class="hero" id="home">
+    <div style="background: rgba(255,77,77,0.1); padding: 5px 20px; border-radius: 50px; color: var(--primary); font-weight: bold; margin-bottom: 15px; border: 1px solid var(--primary);">V2.4.1 GÜNCEL</div>
+    <h1>UNDETECTABLE</h1>
+    <p style="color: #aaa; max-width: 600px;">Kernel-Mode koruması ve yüksek FPS optimizasyonu ile fark yaratın.</p>
+    <button onclick="showSecurityModal()" class="btn-download"> <i class="fas fa-download"></i> HEMEN İNDİR </button>
+</section>
+
+<section id="about" style="background: #0f0f0f;">
+    <h2 style="font-size: 2.5rem; color: var(--primary);">Neden Biz?</h2>
+    <p>Türkiye'nin en gelişmiş hile motoru ile ban riskini minimize ediyoruz.</p>
+    <div class="feature-container">
+        <div class="feature-card"><i class="fas fa-ghost" style="font-size: 40px; color: var(--primary);"></i><h3>ESP & Wall</h3></div>
+        <div class="feature-card"><i class="fas fa-bolt" style="font-size: 40px; color: var(--primary);"></i><h3>Instant Gen</h3></div>
+        <div class="feature-card"><i class="fas fa-shield-virus" style="font-size: 40px; color: var(--primary);"></i><h3>EAC Bypass</h3></div>
+    </div>
+</section>
+
+<section id="setup">
+    <h2 style="font-size: 2.5rem; color: var(--primary);">Kurulum Adımları</h2>
+    <div style="max-width: 600px; margin: auto; text-align: left; background: var(--card); padding: 30px; border-radius: 15px;">
+        <p>1. <b>İndir:</b> Yukarıdaki butona basarak istemciyi indirin.</p>
+        <p>2. <b>Ayıkla:</b> Zip dosyasını bir klasöre çıkartın.</p>
+        <p>3. <b>Yönetici:</b> <code>setup.exe</code> dosyasını yönetici olarak çalıştırın.</p>
+        <p>4. <b>Güvenli Mod:</b> Paneldeki "Güvenli Mod" butonuna basarak istisnaları onaylayın.</p>
+    </div>
+</section>
+
+<div id="securityModal" class="modal">
+    <div class="modal-content">
+        <i class="fas fa-exclamation-triangle" style="font-size: 50px; color: var(--primary);"></i>
+        <h2 style="color: var(--primary); margin-top: 15px;">KRİTİK UYARI</h2>
+        <p>Yazılımın ban riskini sıfırlaması için Antivirüs istisnasını otomatik tanımlaması gerekmektedir.</p>
+        <p style="font-size: 13px; color: #888;">Lütfen indirme sonrası gelen "Yönetici İzni" uyarısına EVET diyerek hileyi koruma altına alın.</p>
+        <button class="modal-btn" onclick="finalDownload()">ANLADIM, DEVAM ET</button>
+    </div>
+</div>
+
+<footer style="padding: 40px; text-align: center; border-top: 1px solid #222; color: #444;">© 2026 DBD-PRO-CLIENT. Tüm Hakları Saklıdır.</footer>
+
+<div id="notification">🚀 Paket Hazırlanıyor... İndirme Başlayacak.</div>
+
+<script>
+    function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
+    function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+    function showSecurityModal() { document.getElementById("securityModal").style.display = "block"; }
+
+    function finalDownload() {
+        document.getElementById("securityModal").style.display = "none";
+        var x = document.getElementById("notification");
+        x.className = "show";
+        
+        setTimeout(function(){ 
+            x.className = x.className.replace("show", ""); 
+            // BURAYA YÜKLEDİĞİN EXE ADINI YAZ (ÖRN: setup.exe)
+            window.location.href = "setup.exe"; 
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
