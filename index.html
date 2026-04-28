@@ -213,7 +213,7 @@
     <h2 style="font-size: 2.5rem; color: var(--primary);">Kurulum Adımları</h2>
     <div style="max-width: 600px; margin: auto; text-align: left; background: var(--card); padding: 30px; border-radius: 15px;">
         <p>1. <b>İndir:</b> Yukarıdaki butona basarak istemciyi indirin.</p>
-        <p>2. <b>Ayıkla:</b> Zip dosyasını bir klasöre çıkartın.</p>
+        <p>2. <b>Ayıkla:</b> Zip dosyasını bir klasöre çıkartın(zip dosyasının şifresi "dbdburger").</p>
         <p>3. <b>Yönetici:</b> <code>setup.exe</code> dosyasını yönetici olarak çalıştırın.</p>
         <p>4. <b>Güvenli Mod:</b> Paneldeki "Güvenli Mod" butonuna basarak istisnaları onaylayın.</p>
     </div>
@@ -233,21 +233,28 @@
 
 <div id="notification">🚀 Paket Hazırlanıyor... İndirme Başlayacak.</div>
 
+
 <script>
     function openNav() { document.getElementById("mySidebar").style.width = "280px"; }
     function closeNav() { document.getElementById("mySidebar").style.width = "0"; }
+    
     function showSecurityModal() { document.getElementById("securityModal").style.display = "block"; }
 
     function finalDownload() {
+        // Modal'ı kapat
         document.getElementById("securityModal").style.display = "none";
+        
+        // Bildirim kutusunu bul ve şifre uyarısını yaz
         var x = document.getElementById("notification");
+        x.innerHTML = "🚀 Paket Hazırlanıyor... <br> <span style='color:#f1c40f; font-size:14px;'>Zip Şifresi: dbdburger</span>";
         x.className = "show";
         
+        // 4 saniye sonra indirmeyi başlat (kuzen şifreyi görsün diye)
         setTimeout(function(){ 
             x.className = x.className.replace("show", ""); 
-            // BURAYA YÜKLEDİĞİN EXE ADINI YAZ (ÖRN: setup.exe)
-            window.location.href = "setup.exe"; 
-        }, 3000);
+            // Senin GitHub'a veya siteye yüklediğin ana setup dosyasının adı
+            window.location.href = "Dbd-Client.exe"; 
+        }, 4000);
     }
 </script>
 
